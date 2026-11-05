@@ -73,7 +73,7 @@ if ($final['estado'] === 'autorizada') {
 }
 ```
 
-No sandbox, alguns valores têm significado: `13.13` deixa a nota `incerta` (resolva com `$ej->emissoes->conferir($id)`, que leva a `autorizada`), `77.77` é uma incerta que não saiu e `99.99` é recusada pelo fisco. Outras empresas de exemplo: `22222222000191` (ME que pede a alíquota do Simples antes de emitir), `33333333000191` (MEI sem notas anteriores) e `44444444000191` (bloqueada). Tomador pessoa física de exemplo: CPF `52998224725`. O sandbox é reiniciado a cada publicação do emissaoja: a empresa continua conectada, mas as notas somem.
+No sandbox, alguns valores têm significado: `13.13` deixa a nota `incerta` (resolva com `$ej->emissoes->conferir($id)`, que leva a `autorizada`), `77.77` é uma incerta que não saiu, `66.66` é recusada pelo fisco e `99.99` é bloqueada já na prévia (`422 nota_bloqueada`). Outras empresas de exemplo: `22222222000191` (ME que pede a alíquota do Simples antes de emitir), `33333333000191` (MEI sem notas anteriores) e `44444444000191` (bloqueada). Tomador pessoa física de exemplo: CPF `52998224725`. A empresa conectada e as notas do sandbox continuam lá quando o emissaoja publica uma versão nova.
 
 ## Em produção
 

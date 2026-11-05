@@ -77,12 +77,13 @@ final class IntegracaoSandboxTest extends TestCase
         $tomador = $ej->tomadores->criar('12345678000195')['tomador'];
         self::assertSame('pj', $tomador['tipo']);
 
-        // valor sorteado longe de 13,13, 77,77 e 99,99 (que têm significado no sandbox) e referência nova a cada execução
+        // valor sorteado entre 100,01 e 199,99: os valores com significado no sandbox (11,11 a 99,99, 21,01 a 21,11,
+        // 87,87) ficam abaixo de 100; referência nova a cada execução
         $referencia = 'php-' . bin2hex(random_bytes(8));
         $campos = [
             'tomador_tipo' => $tomador['tipo'],
             'tomador_id' => $tomador['id'],
-            'valor' => random_int(2001, 4999) / 100,
+            'valor' => random_int(10001, 19999) / 100,
             'descricao' => 'Teste de integração da biblioteca emissaoja-php',
         ];
         $pedido = $ej->notas->emitir($referencia, $campos)['pedido'];
