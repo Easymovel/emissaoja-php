@@ -1,0 +1,68 @@
+# Testes do emissaoja-php: rodam em push na main, em pull request e em tag v*.
+#
+# Publicação no Packagist (emissaoja/emissaoja). O Packagist não usa token nem workflow de publicação: ele lê as tags
+# deste repositório no GitHub.
+#   - Configuração única: entre em https://packagist.org/packages/submit com a conta da empresa e envie a URL
+#     https://github.com/Easymovel/emissaoja-php (o nome do pacote vem do composer.json). Depois deixe ativo o GitHub
+#     hook do Packagist: entrar no Packagist com a conta do GitHub cria o hook sozinho; ou, no repositório, Settings →
+#     Webhooks → Add webhook com a URL https://packagist.org/api/github?username=USUARIO_DO_PACKAGIST, tipo
+#     application/json, o API Token do Packagist como secret e só o evento push.
+#   - Daí em diante, cada tag v* (git tag v0.1.0 && git push origin v0.1.0) vira uma versão no Packagist sozinha, em
+#     poucos minutos.
+#   - Antes da tag, suba Emissaoja::VERSAO (src/Emissaoja.php) e a seção do CHANGELOG.md. Na tag, o job "versao" abaixo
+#     confere os dois; se falhar, apague a tag (git push --delete origin vX.Y.Z), corrija e crie de novo.
+
+name: Testes
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4']
+    name: PHP ${{ matrix.php }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json
+          coverage: none
+          tools: composer:v2
+      - run: composer validate --strict
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: vendor/bin/phpunit
+
+  versao:
+    name: Tag confere com Emissaoja::VERSAO e o CHANGELOG
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: testes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Conferir a versão
+        run: |
+          versao="$(php -r 'require "src/Emissaoja.php"; echo Emissaoja\Emissaoja::VERSAO;')"
+          echo "Tag: $GITHUB_REF_NAME | Emissaoja::VERSAO: $versao"
+          if [ "v$versao" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::A tag $GITHUB_REF_NAME não bate com Emissaoja::VERSAO ($versao) em src/Emissaoja.php."
+            exit 1
+          fi
+          if ! grep -q "^## \[$versao\]" CHANGELOG.md; then
+            echo "::error::O CHANGELOG.md não tem a seção ## [$versao]."
+            exit 1
+          fi

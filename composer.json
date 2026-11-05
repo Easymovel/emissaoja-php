@@ -1,0 +1,77 @@
+{
+    "name": "emissaoja/emissaoja",
+    "description": "API de NFS-e nacional para PHP: emita nota fiscal de serviço eletrônica (NFS-e) no Emissor Nacional sem certificado digital, para MEI e Simples Nacional. Cliente oficial do emissaoja, com PDF (DANFSe), XML e integração com Laravel.",
+    "type": "library",
+    "keywords": [
+        "nfse",
+        "nfs-e",
+        "nfse nacional",
+        "nota fiscal de serviço",
+        "nota fiscal eletrônica",
+        "emissor nacional",
+        "api nfse",
+        "emitir nfse",
+        "nfse sem certificado digital",
+        "mei",
+        "simples nacional",
+        "danfse",
+        "brasil",
+        "brazil",
+        "invoice",
+        "service invoice",
+        "sdk",
+        "laravel"
+    ],
+    "homepage": "https://emissaoja.com.br",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "BINOBO LTDA",
+            "homepage": "https://emissaoja.com.br"
+        }
+    ],
+    "support": {
+        "email": "suporte@emissaoja.com.br",
+        "issues": "https://github.com/Easymovel/emissaoja-php/issues",
+        "source": "https://github.com/Easymovel/emissaoja-php",
+        "docs": "https://emissaoja.com.br/docs/"
+    },
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5 || ^11.0"
+    },
+    "suggest": {
+        "illuminate/support": "Para a integração com Laravel (service provider, Facade e config/emissaoja.php, com descoberta automática)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emissaoja\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Emissaoja\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Emissaoja\\Laravel\\EmissaojaServiceProvider"
+            ],
+            "aliases": {
+                "Emissaoja": "Emissaoja\\Laravel\\Facades\\Emissaoja"
+            }
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+}
