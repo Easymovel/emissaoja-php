@@ -5,7 +5,7 @@
 [![PHP](https://img.shields.io/packagist/php-v/emissaoja/emissaoja.svg)](https://packagist.org/packages/emissaoja/emissaoja)
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
 
-**Emita NFS-e no Emissor Nacional a partir do seu sistema em PHP, sem certificado digital.** Esta é a biblioteca oficial da API do [emissaoja](https://emissaoja.com.br) para PHP: com o CNPJ e a senha do portal do Emissor Nacional (nfse.gov.br), ela conecta a empresa, cadastra tomadores e serviços, emite a nota fiscal de serviço eletrônica, acompanha até a autorização, cancela e baixa o PDF (DANFSe) e o XML. Feita para MEI e empresas do Simples Nacional.
+**Emita NFS-e no Emissor Nacional a partir do seu sistema em PHP, sem certificado digital.** Esta é a biblioteca oficial da API do [emissaoja](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=home) para PHP: com o CNPJ e a senha do portal do Emissor Nacional (nfse.gov.br), ela conecta a empresa, cadastra tomadores e serviços, emite a nota fiscal de serviço eletrônica, acompanha até a autorização, cancela e baixa o PDF (DANFSe) e o XML. Feita para MEI e empresas do Simples Nacional.
 
 - PHP 8.1 a 8.4, **sem dependências** (só as extensões `curl` e `json`). Funciona em Laravel, Symfony, WordPress ou PHP puro.
 - **Nota em dobro não sai:** cada emissão leva uma `referencia` sua (cabeçalho `Idempotency-Key`), conferida antes de chamar a API.
@@ -22,7 +22,7 @@ composer require emissaoja/emissaoja
 
 Requer PHP 8.1 ou mais novo com as extensões `curl` e `json` (presentes na maioria das instalações).
 
-Para usar a API, [crie a sua conta no emissaoja](https://emissaoja.com.br/?origem=lib-php): entre no app com a conta Google (https://emissaoja.com.br/app), aceite os termos e crie a chave em **Conta → API**. Ela aparece uma vez e começa com `ej_live_`. Guarde-a no ambiente do servidor:
+Para usar a API, [crie a sua conta no emissaoja](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=home): entre no app com a conta Google ([emissaoja.com.br/app](https://emissaoja.com.br/app?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=app)), aceite os termos e crie a chave em **Conta → API**. Ela aparece uma vez e começa com `ej_live_`. Guarde-a no ambiente do servidor:
 
 ```bash
 export EMISSAOJA_KEY=ej_live_...
@@ -77,7 +77,7 @@ No sandbox, alguns valores têm significado: `13.13` deixa a nota `incerta` (res
 
 ## Em produção
 
-Troque a base e a chave: sem `baseUrl`, o cliente já usa a produção (https://emissaoja.com.br), com a chave `ej_live_` criada em https://emissaoja.com.br/app. A chave `ej_test_` só vale no sandbox, e a `ej_live_`, só em produção.
+Troque a base e a chave: sem `baseUrl`, o cliente já usa a produção ([emissaoja.com.br](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=home)), com a chave `ej_live_` criada em [emissaoja.com.br/app](https://emissaoja.com.br/app?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=app). A chave `ej_test_` só vale no sandbox, e a `ej_live_`, só em produção.
 
 ```php
 $ej = new Emissaoja();                                  // EMISSAOJA_KEY=ej_live_... no ambiente
@@ -87,7 +87,7 @@ $ej = new Emissaoja(['chave' => $chave, 'timeout' => 15]); // as mesmas opções
 
 > **A chave de API é secreta.** Quem tem a chave emite notas em nome da empresa. Use-a só no servidor (back-end, filas, scripts), nunca em JavaScript do navegador nem em app distribuído, e não a escreva no código nem no Git: guarde-a numa variável de ambiente ou num cofre de segredos. Se vazar, revogue em **Conta → API**.
 
-As respostas são o JSON da API em arrays associativos, com os nomes da API (`snake_case`). A lista completa de campos está na [documentação](https://emissaoja.com.br/docs/) e no [OpenAPI](https://emissaoja.com.br/v1/openapi.json).
+As respostas são o JSON da API em arrays associativos, com os nomes da API (`snake_case`). A lista completa de campos está na [documentação](https://emissaoja.com.br/docs/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=docs) e no [OpenAPI](https://emissaoja.com.br/v1/openapi.json).
 
 ## Empresa
 
@@ -262,7 +262,7 @@ No PHP, `Exception::$code` é inteiro: por isso o `code` da API fica em `$e->err
 | `sem_empresa` | 409 | Conecte a empresa com `empresa->conectar()`. |
 | `validation_error`, `valor_invalido`, `tomador_obrigatorio`, `cnpj_invalido` | 400 | Corrija o campo (detalhes em `extras['details']`). |
 | `chave_idempotencia_invalida` | 0 | `referencia` com 8 a 64 caracteres: letras, números, `_` e `-`. |
-| `limite_notas` | 402 | As notas do plano no mês acabaram; veja os planos em https://emissaoja.com.br/#precos. |
+| `limite_notas` | 402 | As notas do plano no mês acabaram; veja os planos em [emissaoja.com.br/#precos](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=precos#precos). |
 | `tomador_nao_encontrado`, `servico_nao_encontrado`, `nota_nao_encontrada`, `pedido_nao_encontrado` | 404 | Confira o id. |
 | `possivel_duplicada` | 409 | Saiu hoje uma nota igual; se for mesmo outra, repita com `permitir_repetida_de`. |
 | `emissao_repetida_recente` | 409 | A mesma nota foi pedida há menos de 2 minutos; se for mesmo outra, repita com `confirmo_repeticao`. |
@@ -414,13 +414,13 @@ O `CurlTransporte` reaproveita a conexão entre as chamadas e não segue redirec
 
 **Tem ambiente de testes?** Sim: o sandbox, em https://sandbox.emissaoja.com.br, com o Emissor Nacional simulado, empresas e tomadores de exemplo e chaves `ej_test_`. É grátis e nada vai ao fisco.
 
-**Quanto custa?** Há o plano Grátis, com 1 nota por mês, e planos pagos: veja em https://emissaoja.com.br/#precos. A biblioteca é gratuita (MIT).
+**Quanto custa?** Há o plano Grátis, com 1 nota por mês, e planos pagos: veja em [emissaoja.com.br/#precos](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=precos#precos). A biblioteca é gratuita (MIT).
 
 **Tem webhook?** Ainda não. Acompanhe o pedido com `$ej->notas->aguardar($id)` ou `$ej->emissoes->obter($id)`, que trazem `proxima_consulta_ms`.
 
 ## Links
 
-- Documentação da API: https://emissaoja.com.br/docs/ (também em Markdown: https://emissaoja.com.br/docs.md)
+- Documentação da API: [emissaoja.com.br/docs](https://emissaoja.com.br/docs/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=docs) (também em Markdown: https://emissaoja.com.br/docs.md)
 - OpenAPI 3.1: https://emissaoja.com.br/v1/openapi.json
 - Para IAs: https://emissaoja.com.br/llms.txt
 - MCP (emitir pelo seu assistente de IA): https://emissaoja.com.br/mcp
@@ -432,9 +432,9 @@ Licença [MIT](LICENSE). Copyright (c) 2026 BINOBO LTDA (CNPJ 68.649.497/0001-07
 
 ## In English
 
-**emissaoja** is the official PHP client for the [emissaoja](https://emissaoja.com.br) API: issue Brazilian **NFS-e** (electronic service invoices) through the national issuer, the Emissor Nacional, with the company's CNPJ and portal password, **no digital certificate required**, for MEI and Simples Nacional companies. Connect the company, register customers and services, issue, track, cancel and download the PDF (DANFSe) and XML.
+**emissaoja** is the official PHP client for the [emissaoja](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=home) API: issue Brazilian **NFS-e** (electronic service invoices) through the national issuer, the Emissor Nacional, with the company's CNPJ and portal password, **no digital certificate required**, for MEI and Simples Nacional companies. Connect the company, register customers and services, issue, track, cancel and download the PDF (DANFSe) and XML.
 
-PHP 8.1+, no dependencies (ext-curl, ext-json), idempotent issuing, Laravel integration included: `composer require emissaoja/emissaoja`. Try it for free in the sandbox (https://sandbox.emissaoja.com.br) and [create your account](https://emissaoja.com.br/?origem=lib-php).
+PHP 8.1+, no dependencies (ext-curl, ext-json), idempotent issuing, Laravel integration included: `composer require emissaoja/emissaoja`. Try it for free in the sandbox (https://sandbox.emissaoja.com.br) and [create your account](https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=readme&utm_campaign=home).
 
 ---
 

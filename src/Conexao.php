@@ -202,7 +202,7 @@ final class Conexao
                 0,
                 'chave_invalida',
                 'Informe a chave de API: new Emissaoja\Emissaoja(chave: \'ej_live_...\') ou a variável de ambiente '
-                . 'EMISSAOJA_KEY. A chave é criada no app, em Conta → API (https://emissaoja.com.br/app).',
+                . 'EMISSAOJA_KEY. A chave é criada no app, em Conta → API (https://emissaoja.com.br/app?origem=lib-php&utm_source=packagist&utm_medium=erro&utm_campaign=app).',
             );
         }
         if (preg_match('/[\x00-\x20\x7F]/', $this->chave) === 1) {
