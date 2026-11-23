@@ -22,19 +22,19 @@
         "sdk",
         "laravel"
     ],
-    "homepage": "https://emissaoja.com.br",
+    "homepage": "https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=pacote&utm_campaign=home",
     "license": "MIT",
     "authors": [
         {
             "name": "BINOBO LTDA",
-            "homepage": "https://emissaoja.com.br"
+            "homepage": "https://emissaoja.com.br/?origem=lib-php&utm_source=packagist&utm_medium=pacote&utm_campaign=home"
         }
     ],
     "support": {
         "email": "suporte@emissaoja.com.br",
         "issues": "https://github.com/Easymovel/emissaoja-php/issues",
         "source": "https://github.com/Easymovel/emissaoja-php",
-        "docs": "https://emissaoja.com.br/docs/"
+        "docs": "https://emissaoja.com.br/docs/?origem=lib-php&utm_source=packagist&utm_medium=pacote&utm_campaign=docs"
     },
     "require": {
         "php": ">=8.1",
